@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -6,13 +7,15 @@ const UserSchema = new mongoose.Schema({
     required: true,
     trim: true,
     minlength: 1,
-    maxlength: 50 
+    maxlength: 50,
+    unique: true 
   },
   password: {
     type: String, 
     required: true,
   }
 })
+
 
 // pre save hook use bcrypt to hash password
 UserSchema.pre("save", function(next) {
@@ -21,10 +24,11 @@ UserSchema.pre("save", function(next) {
   next(); // must be called on mongoose middleware
 })
 
+UserSchema.methods.checkUsername
 
 // instance method that checks the password (method is attached to the document)
 UserSchema.methods.checkPassword = function(password) {
-  return bcrypt.compareSync(password, this.password); 
+  return bcrypt.compareSync(password, this.password);
 }
 
 
