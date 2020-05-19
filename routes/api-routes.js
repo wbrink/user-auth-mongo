@@ -63,4 +63,10 @@ router.get("/api/protected", isAuthenticated, (req, res) => {
 })
 
 
+router.get("/api/logout", isAuthenticated, (req,res) => {
+  req.logOut();
+  res.json({msg: "You are now logged out"});
+})
+
+
 module.exports = router;
